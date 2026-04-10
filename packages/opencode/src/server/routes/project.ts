@@ -88,6 +88,35 @@ export const ProjectRoutes = lazy(() =>
         return c.json(next)
       },
     )
+    .post(
+      "/create",
+      describeRoute({
+        summary: "Create new project",
+        description: "Automatically create a new sandbox project directory, initialize git, and register it.",
+        operationId: "project.create",
+        responses: {
+          200: {
+            description: "Created project info and directory path",
+            content: {
+              "application/json": {
+                schema: resolver(
+                  z.object({
+                    project: Project.Info,
+                    directory: z.string(),
+                  }),
+                ),
+              },
+            },
+          },
+        },
+      }),
+      validator("json", z.object({ name: z.string().optional() }).optional()),
+      async (c) => {
+        const body = c.req.valid("json") ?? {}
+        const result = await Project.create({ name: body?.name })
+        return c.json(result)
+      },
+    )
     .patch(
       "/:projectID",
       describeRoute({

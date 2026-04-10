@@ -1,4 +1,4 @@
-import { createMemo, For, Match, Switch } from "solid-js"
+import { createMemo, createSignal, For, Match, Switch } from "solid-js"
 import { Button } from "@opencode-ai/ui/button"
 import { Logo } from "@opencode-ai/ui/logo"
 import { useLayout } from "@/context/layout"
@@ -13,6 +13,7 @@ import { DialogSelectServer } from "@/components/dialog-select-server"
 import { useServer } from "@/context/server"
 import { useGlobalSync } from "@/context/global-sync"
 import { useLanguage } from "@/context/language"
+import { useGlobalSDK } from "@/context/global-sdk"
 
 export default function Home() {
   const sync = useGlobalSync()
@@ -22,6 +23,7 @@ export default function Home() {
   const navigate = useNavigate()
   const server = useServer()
   const language = useLanguage()
+  const globalSDK = useGlobalSDK()
   const homedir = createMemo(() => sync.data.path.home)
   const recent = createMemo(() => {
     return sync.data.project
@@ -37,10 +39,25 @@ export default function Home() {
     return "bg-border-weak-base"
   })
 
+  const [creating, setCreating] = createSignal(false)
+
   function openProject(directory: string) {
     layout.projects.open(directory)
     server.projects.touch(directory)
     navigate(`/${base64Encode(directory)}`)
+  }
+
+  async function createNewProject() {
+    if (creating()) return
+    setCreating(true)
+    try {
+      const result = await globalSDK.client.project.create()
+      if (result.data) {
+        openProject(result.data.directory)
+      }
+    } finally {
+      setCreating(false)
+    }
   }
 
   async function chooseProject() {
@@ -90,9 +107,14 @@ export default function Home() {
           <div class="mt-20 w-full flex flex-col gap-4">
             <div class="flex gap-2 items-center justify-between pl-3">
               <div class="text-14-medium text-text-strong">{language.t("home.recentProjects")}</div>
-              <Button icon="folder-add-left" size="normal" class="pl-2 pr-3" onClick={chooseProject}>
-                {language.t("command.project.open")}
-              </Button>
+              <div class="flex gap-2">
+                <Button icon="add" size="normal" class="pl-2 pr-3" onClick={createNewProject} disabled={creating()}>
+                  {creating() ? language.t("home.creatingProject") : language.t("home.newProject")}
+                </Button>
+                <Button icon="folder-add-left" size="normal" class="pl-2 pr-3" onClick={chooseProject}>
+                  {language.t("command.project.open")}
+                </Button>
+              </div>
             </div>
             <ul class="flex flex-col gap-2">
               <For each={recent()}>
@@ -116,9 +138,14 @@ export default function Home() {
         <Match when={!sync.ready}>
           <div class="mt-30 mx-auto flex flex-col items-center gap-3">
             <div class="text-12-regular text-text-weak">{language.t("common.loading")}</div>
-            <Button class="px-3" onClick={chooseProject}>
-              {language.t("command.project.open")}
-            </Button>
+            <div class="flex gap-2">
+              <Button class="px-3" onClick={createNewProject} disabled={creating()}>
+                {creating() ? language.t("home.creatingProject") : language.t("home.newProject")}
+              </Button>
+              <Button class="px-3" onClick={chooseProject}>
+                {language.t("command.project.open")}
+              </Button>
+            </div>
           </div>
         </Match>
         <Match when={true}>
@@ -128,9 +155,14 @@ export default function Home() {
               <div class="text-14-medium text-text-strong">{language.t("home.empty.title")}</div>
               <div class="text-12-regular text-text-weak">{language.t("home.empty.description")}</div>
             </div>
-            <Button class="px-3 mt-1" onClick={chooseProject}>
-              {language.t("command.project.open")}
-            </Button>
+            <div class="flex gap-2 mt-1">
+              <Button class="px-3" onClick={createNewProject} disabled={creating()}>
+                {creating() ? language.t("home.creatingProject") : language.t("home.newProject")}
+              </Button>
+              <Button variant="ghost" class="px-3" onClick={chooseProject}>
+                {language.t("command.project.open")}
+              </Button>
+            </div>
           </div>
         </Match>
       </Switch>
