@@ -497,6 +497,8 @@ export const dict = {
   "home.recentProjects": "Недавние проекты",
   "home.empty.title": "Нет недавних проектов",
   "home.empty.description": "Начните с открытия локального проекта",
+  "home.newProject": "New project",
+  "home.creatingProject": "Creating...",
 
   "session.tab.session": "Сессия",
   "session.tab.review": "Обзор",

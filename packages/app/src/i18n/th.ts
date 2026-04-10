@@ -492,6 +492,8 @@ export const dict = {
   "home.recentProjects": "โปรเจกต์ล่าสุด",
   "home.empty.title": "ไม่มีโปรเจกต์ล่าสุด",
   "home.empty.description": "เริ่มต้นโดยเปิดโปรเจกต์ในเครื่อง",
+  "home.newProject": "New project",
+  "home.creatingProject": "Creating...",
 
   "session.tab.session": "เซสชัน",
   "session.tab.review": "ตรวจสอบ",

@@ -496,6 +496,8 @@ export const dict = {
   "home.recentProjects": "Nedavni projekti",
   "home.empty.title": "Nema nedavnih projekata",
   "home.empty.description": "Kreni tako što ćeš otvoriti lokalni projekat",
+  "home.newProject": "New project",
+  "home.creatingProject": "Creating...",
 
   "session.tab.session": "Sesija",
   "session.tab.review": "Pregled",

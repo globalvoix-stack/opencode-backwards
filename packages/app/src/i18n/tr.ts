@@ -501,6 +501,8 @@ export const dict = {
   "home.recentProjects": "Son projeler",
   "home.empty.title": "Son proje yok",
   "home.empty.description": "Yerel bir proje açarak başlayın",
+  "home.newProject": "New project",
+  "home.creatingProject": "Creating...",
 
   "session.tab.session": "Oturum",
   "session.tab.review": "İnceleme",

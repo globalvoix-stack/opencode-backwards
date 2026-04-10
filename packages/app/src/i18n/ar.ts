@@ -442,6 +442,8 @@ export const dict = {
   "home.recentProjects": "المشاريع الحديثة",
   "home.empty.title": "لا توجد مشاريع حديثة",
   "home.empty.description": "ابدأ بفتح مشروع محلي",
+  "home.newProject": "New project",
+  "home.creatingProject": "Creating...",
   "session.tab.session": "جلسة",
   "session.tab.review": "مراجعة",
   "session.tab.context": "سياق",
