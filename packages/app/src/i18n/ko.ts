@@ -445,6 +445,8 @@ export const dict = {
   "home.recentProjects": "최근 프로젝트",
   "home.empty.title": "최근 프로젝트 없음",
   "home.empty.description": "로컬 프로젝트를 열어 시작하세요",
+  "home.newProject": "New project",
+  "home.creatingProject": "Creating...",
   "session.tab.session": "세션",
   "session.tab.review": "검토",
   "session.tab.context": "컨텍스트",

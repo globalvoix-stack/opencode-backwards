@@ -495,6 +495,8 @@ export const dict = {
   "home.recentProjects": "最近项目",
   "home.empty.title": "没有最近项目",
   "home.empty.description": "通过打开本地项目开始使用",
+  "home.newProject": "New project",
+  "home.creatingProject": "Creating...",
 
   "session.tab.session": "会话",
   "session.tab.review": "审查",

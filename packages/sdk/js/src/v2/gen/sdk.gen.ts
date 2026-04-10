@@ -82,6 +82,7 @@ import type {
   PermissionRespondErrors,
   PermissionRespondResponses,
   PermissionRuleset,
+  Project as ProjectInfo,
   ProjectCurrentResponses,
   ProjectInitGitResponses,
   ProjectListResponses,
@@ -610,6 +611,32 @@ export class Project extends HeyApiClient {
       url: "/project/git/init",
       ...options,
       ...params,
+    })
+  }
+
+  /**
+   * Create new project
+   *
+   * Automatically create a new sandbox project directory, initialize git, and register it.
+   */
+  public create<ThrowOnError extends boolean = false>(
+    parameters?: {
+      name?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    return (options?.client ?? this.client).post<
+      { project: ProjectInfo; directory: string },
+      unknown,
+      ThrowOnError
+    >({
+      url: "/project/create",
+      ...options,
+      body: parameters ?? {},
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+      },
     })
   }
 

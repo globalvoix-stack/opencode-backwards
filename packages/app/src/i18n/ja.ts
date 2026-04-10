@@ -443,6 +443,8 @@ export const dict = {
   "home.recentProjects": "最近のプロジェクト",
   "home.empty.title": "最近のプロジェクトはありません",
   "home.empty.description": "ローカルプロジェクトを開いて始めましょう",
+  "home.newProject": "New project",
+  "home.creatingProject": "Creating...",
   "session.tab.session": "セッション",
   "session.tab.review": "レビュー",
   "session.tab.context": "コンテキスト",

@@ -444,6 +444,8 @@ export const dict = {
   "home.recentProjects": "Ostatnie projekty",
   "home.empty.title": "Brak ostatnich projektów",
   "home.empty.description": "Zacznij od otwarcia lokalnego projektu",
+  "home.newProject": "New project",
+  "home.creatingProject": "Creating...",
   "session.tab.session": "Sesja",
   "session.tab.review": "Przegląd",
   "session.tab.context": "Kontekst",

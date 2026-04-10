@@ -14,6 +14,7 @@ import { NodeFileSystem, NodePath } from "@effect/platform-node"
 import { makeRuntime } from "@/effect/run-service"
 import { AppFileSystem } from "@/filesystem"
 import * as CrossSpawnSpawner from "@/effect/cross-spawn-spawner"
+import { Global } from "@/global"
 
 export namespace Project {
   const log = Log.create({ service: "project" })
@@ -94,6 +95,7 @@ export namespace Project {
     readonly get: (id: ProjectID) => Effect.Effect<Info | undefined>
     readonly update: (input: UpdateInput) => Effect.Effect<Info>
     readonly initGit: (input: { directory: string; project: Info }) => Effect.Effect<Info>
+    readonly create: (input: { name?: string }) => Effect.Effect<{ project: Info; directory: string }>
     readonly setInitialized: (id: ProjectID) => Effect.Effect<void>
     readonly sandboxes: (id: ProjectID) => Effect.Effect<string[]>
     readonly addSandbox: (id: ProjectID, directory: string) => Effect.Effect<void>
@@ -387,6 +389,23 @@ export namespace Project {
         return project
       })
 
+      const create = Effect.fn("Project.create")(function* (input: { name?: string }) {
+        const slug = input.name
+          ? input.name
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/^-|-$/g, "")
+          : `project-${Date.now()}`
+        const directory = pathSvc.join(Global.Path.data, "projects", slug)
+        yield* fs.makeDirectory(directory, { recursive: true })
+        const gitBinary = yield* Effect.sync(() => which("git"))
+        if (gitBinary) {
+          yield* git(["init", "--quiet"], { cwd: directory })
+        }
+        const { project } = yield* fromDirectory(directory)
+        return { project, directory }
+      })
+
       const setInitialized = Effect.fn("Project.setInitialized")(function* (id: ProjectID) {
         yield* db((d) =>
           d.update(ProjectTable).set({ time_initialized: Date.now() }).where(eq(ProjectTable.id, id)).run(),
@@ -448,6 +467,7 @@ export namespace Project {
         get,
         update,
         initGit,
+        create,
         setInitialized,
         sandboxes,
         addSandbox,
@@ -515,5 +535,9 @@ export namespace Project {
 
   export function removeSandbox(id: ProjectID, directory: string) {
     return runPromise((svc) => svc.removeSandbox(id, directory))
+  }
+
+  export function create(input: { name?: string }) {
+    return runPromise((svc) => svc.create(input))
   }
 }

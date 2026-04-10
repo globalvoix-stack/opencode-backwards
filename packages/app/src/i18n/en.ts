@@ -519,7 +519,9 @@ export const dict = {
 
   "home.recentProjects": "Recent projects",
   "home.empty.title": "No recent projects",
-  "home.empty.description": "Get started by opening a local project",
+  "home.empty.description": "Create a new project or open a local folder",
+  "home.newProject": "New project",
+  "home.creatingProject": "Creating...",
 
   "session.tab.session": "Session",
   "session.tab.review": "Review",
